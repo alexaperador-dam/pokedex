@@ -3,9 +3,10 @@
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 1 seguint els requisits
 import { BasePokemon } from "./models.js";
-import { mostrarEstat, renderitzarLlistaPokemons } from "./utils.js";
+import { mostrarEstat, netejarCercador, renderitzarLlistaPokemons } from "./utils.js";
 const mapaPokemon = new Map();
 async function carregarLlistaPokemon() {
+    netejarCercador();
     try {
         const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
         if (!response.ok) {
@@ -29,6 +30,14 @@ document.getElementById("btn-show-all")?.addEventListener("click", () => {
 // EXERCICI 2: Cercador en temps real
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 2 seguint els requisits
+document.getElementById("search-input")?.addEventListener("input", () => {
+    const searchInput = document.getElementById("search-input");
+    const value = searchInput.value.toLowerCase();
+    const filtrarPokemons = Array.from(mapaPokemon.values()).filter((pokemon) => pokemon.name.toLowerCase().trim().includes(value) ||
+        pokemon.formattedId.includes(value) ||
+        pokemon.id.toString().includes(value));
+    renderitzarLlistaPokemons(filtrarPokemons);
+});
 // ==========================================================
 // EXERCICI 3: Detall del Pokémon, cache i crit
 // ==========================================================
