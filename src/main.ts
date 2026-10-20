@@ -3,11 +3,29 @@
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 1 seguint els requisits
 
-import { BasePokemon } from "./models.js";
-
-async function carregarLlistaPokemon() {}
+import { BasePokemon, IPokeApiListResponse } from "./models.js";
+import { mostrarEstat, renderitzarLlistaPokemons } from "./utils.js";
 
 const mapaPokemon = new Map<number, BasePokemon>();
+
+async function carregarLlistaPokemon() {
+  try {
+    const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
+    if (!response.ok) {
+      mostrarEstat("No s'ha pogut carregar la llista de Pokémon.", "error");
+    }
+    const data: IPokeApiListResponse = await response.json();
+    data.results.forEach((pokemon) => {
+      const pokemonData: BasePokemon = new BasePokemon(pokemon);
+      mapaPokemon.set(pokemonData.id, pokemonData);
+    });
+    
+  } catch (error) {
+    mostrarEstat("Error al carregar la llista de Pokémon.", "error");
+  }
+  renderitzarLlistaPokemons(Array.from(mapaPokemon.values()));
+}
+
 document.getElementById("btn-show-all")?.addEventListener("click", () => {
   carregarLlistaPokemon();
 });
