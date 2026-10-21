@@ -13,10 +13,10 @@ async function carregarLlistaPokemon() {
             mostrarEstat("No s'ha pogut carregar la llista de Pokémon.", "error");
         }
         const data = await response.json();
-        data.results.forEach((pokemon) => {
+        for (const pokemon of data.results) {
             const pokemonData = new BasePokemon(pokemon);
             mapaPokemon.set(pokemonData.id, pokemonData);
-        });
+        }
     }
     catch (error) {
         mostrarEstat("Error al carregar la llista de Pokémon.", "error");

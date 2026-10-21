@@ -74,26 +74,19 @@ export class BasePokemon {
         return `#${this._id.toString().padStart(3, '0')}`;
     }
 }
-/**
- * EXERCICI 1: class BasePokemon  -> És la classe PARE. Representa un Pokémon de la llista general.
- *
- * Atributs (privats, amb prefix _):
- *   _id: número que conté l'identificador únic del pokemon
- *   _name: cadena de text que conté el nom del pokemon
- *   _url: cadena de text que conté la url per obtenir el detall del pokemon
- *
- * Constructor(item: IPokeApiListItem):
- *   - Desa name i url.
- *   - L'id NO ve a les dades: has d'extreure'l de la url.
- *     Ex: "https://pokeapi.co/api/v2/pokemon/25/"  ->  25
- *     Pista: split("/"), filter(Boolean), pop(), Number().
- *
- * Getters:
- *   get id: retorna l'atribut privat corresponent.
- *   get name: retorna l'atribut privat corresponent.
- *   get url: retorna l'atribut privat corresponent.
- *   get formattedId: retorna l'atribut id en format "#025" (3 xifres, amb zeros a l'esquerra. Pista: padStart).
- */
+export class DetailedPokemon extends BasePokemon {
+    _weightKg;
+    _imageUrl;
+    _types;
+    _stats;
+    _cryUrl;
+    constructor(data, url) {
+        super({ name: data.name, url: url });
+    }
+    get weightKg() {
+        return this._weightKg;
+    }
+}
 /**
  * EXERCICI 3: class DetailedPokemon
  *
