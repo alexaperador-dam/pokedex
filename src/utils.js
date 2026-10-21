@@ -117,6 +117,27 @@ export function renderitzarLlistaPokemons(pokemons) {
  *  - Un cop pintat l'HTML, afegeix el listener de clic al botó i crida reproduirCrit().
  */
 // TODO: Implementa la lògica de l'exercici 3 seguint els requisits
+export function renderitzarDetallCard(pokemon) {
+    const detailContainer = document.getElementById("pokemon-detail");
+    if (!detailContainer)
+        return;
+    let cryButtonHTML = "";
+    if (pokemon.cryUrl) {
+        cryButtonHTML = `<button id="btn-play-cry" class="btn-cry">🔊 Escolta el crit</button>`;
+    }
+    detailContainer.innerHTML = `
+        <div class="detail-card">
+            <h3>${pokemon.formattedId} ${pokemon.name}</h3>
+            <img src="${pokemon.imageUrl}" alt="${pokemon.name}">
+            ${cryButtonHTML}
+            <p><strong>Pes:</strong> ${pokemon.weightKg} kg</p>
+            <p><strong>Tipus:</strong> ${pokemon.types.map((type) => type.icon + " " + type.label).join(", ")}</p>
+            <div class="stats-grid">
+                ${pokemon.stats.map((stat) => `<div class="stat-box"><span>${stat[0].toUpperCase()}</span><strong>${stat[1]}</strong></div>`).join("")}
+            </div>
+        </div>
+    `;
+}
 /**
  * EXERCICI 4
  * Genera un botó per a cada tipus dins de <div id="type-filter-container">.

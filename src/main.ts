@@ -3,10 +3,11 @@
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 1 seguint els requisits
 
-import { BasePokemon, IPokeApiListResponse } from "./models.js";
-import { mostrarEstat, netejarCercador, renderitzarLlistaPokemons } from "./utils.js";
+import { BasePokemon, DetailedPokemon, IPokeApiDetail, IPokeApiListResponse } from "./models.js";
+import { marcarItemActiu, mostrarEstat, netejarCercador, renderitzarDetallCard, renderitzarLlistaPokemons } from "./utils.js";
 
 const mapaPokemon = new Map<number, BasePokemon>();
+const cachePokemon = new Map<number, DetailedPokemon>();
 
 async function carregarLlistaPokemon() {
   netejarCercador();
@@ -52,6 +53,42 @@ document.getElementById("search-input")?.addEventListener("input", () => {
 // EXERCICI 3: Detall del Pokémon, cache i crit
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 3 seguint els requisits
+
+document.getElementById("pokemon-list")?.addEventListener("click", async (event) => {
+  const target = event.target as HTMLElement;
+
+  if (target.tagName === "LI") {
+    const id = parseInt(target.dataset.id || "0");
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
+    marcarItemActiu(target);
+    await carregarDetallPokemon(id, url);
+  }
+})
+
+async function carregarDetallPokemon(id: number, url: string): Promise<void> {
+  if (cachePokemon.has(id)) {
+    const cachedPokemon = cachePokemon.get(id);
+    if (cachedPokemon) {
+      renderitzarDetallCard(cachedPokemon);
+    }
+  }
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      mostrarEstat("No s'ha pogut carregar el detall del Pokémon.", "error");
+      return;
+    }
+
+    const data: IPokeApiDetail = await response.json();
+
+    const detailedPokemon = new DetailedPokemon(data, url);
+    cachePokemon.set(id, detailedPokemon);
+    renderitzarDetallCard(detailedPokemon);
+  } catch (error) {
+    mostrarEstat("Error al carregar el detall del Pokémon.", "error");
+  }
+}
 
 // ==========================================================
 // EXERCICI 4: Botons de filtre per tipus
