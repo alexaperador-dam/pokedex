@@ -71,16 +71,16 @@ export function reproduirCrit(soundUrl) {
 /**
  * EXERCICI 1
  * Renderitza la llista de Pokémon dins de <ul id="pokemon-list">.
-*
-* Requisits:
-*  - Obtenir una instància del contenidor on es mostra la llista de pokémons.
-*  - Buidar el contenidor abans de pintar.
-*  - Per a cada pokémon, crear un <li> amb createElement.
-*  - Desar id a dataset: li.dataset.id
-*  - El text del <li> ha de ser: <strong>#025</strong> - pikachu
-*    (usa els getters formattedId i name).
-*  - Afegir el <li> al contenidor amb appendChild.
-*/
+ *
+ * Requisits:
+ *  - Obtenir una instància del contenidor on es mostra la llista de pokémons.
+ *  - Buidar el contenidor abans de pintar.
+ *  - Per a cada pokémon, crear un <li> amb createElement.
+ *  - Desar id a dataset: li.dataset.id
+ *  - El text del <li> ha de ser: <strong>#025</strong> - pikachu
+ *    (usa els getters formattedId i name).
+ *  - Afegir el <li> al contenidor amb appendChild.
+ */
 // TODO: Implementa la lògica de l'exercici 1 seguint els requisits
 export function renderitzarLlistaPokemons(pokemons) {
     const listContainer = document.getElementById("pokemon-list");
@@ -126,17 +126,22 @@ export function renderitzarDetallCard(pokemon) {
         cryButtonHTML = `<button id="btn-play-cry" class="btn-cry">🔊 Escolta el crit</button>`;
     }
     detailContainer.innerHTML = `
-        <div class="detail-card">
-            <h3>${pokemon.formattedId} ${pokemon.name}</h3>
-            <img src="${pokemon.imageUrl}" alt="${pokemon.name}">
-            ${cryButtonHTML}
-            <p><strong>Pes:</strong> ${pokemon.weightKg} kg</p>
-            <p><strong>Tipus:</strong> ${pokemon.types.map((type) => type.icon + " " + type.label).join(", ")}</p>
-            <div class="stats-grid">
-                ${pokemon.stats.map((stat) => `<div class="stat-box"><span>${stat[0].toUpperCase()}</span><strong>${stat[1]}</strong></div>`).join("")}
-            </div>
-        </div>
+    <div class="detail-card">
+    <h3>${pokemon.formattedId} ${pokemon.name}</h3>
+    <img src="${pokemon.imageUrl}" alt="${pokemon.name}">
+    ${cryButtonHTML}
+    <p><strong>Pes:</strong> ${pokemon.weightKg} kg</p>
+    <p><strong>Tipus:</strong> ${pokemon.types.map((type) => type.label).join(", ")}</p>
+    <div class="stats-grid">
+        ${pokemon.stats.map((stat) => `<div class="stat-box"><span>${stat[0].toUpperCase()}</span><strong>${stat[1]}</strong></div>`).join("")}
+    </div>
+    </div>
     `;
+    document.getElementById("btn-play-cry")?.addEventListener("click", () => {
+        if (pokemon.cryUrl) {
+            reproduirCrit(pokemon.cryUrl);
+        }
+    });
 }
 /**
  * EXERCICI 4

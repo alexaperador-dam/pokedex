@@ -4,7 +4,7 @@
 // TODO: Implementa la lògica de l'exercici 1 seguint els requisits
 
 import { BasePokemon, DetailedPokemon, IPokeApiDetail, IPokeApiListResponse } from "./models.js";
-import { marcarItemActiu, mostrarEstat, netejarCercador, renderitzarDetallCard, renderitzarLlistaPokemons } from "./utils.js";
+import { amagarEstat, marcarItemActiu, mostrarEstat, netejarCercador, renderitzarDetallCard, renderitzarLlistaPokemons } from "./utils.js";
 
 const mapaPokemon = new Map<number, BasePokemon>();
 const cachePokemon = new Map<number, DetailedPokemon>();
@@ -74,6 +74,7 @@ async function carregarDetallPokemon(id: number, url: string): Promise<void> {
   }
 
   try {
+    mostrarEstat("Carregant el detall del Pokémon...", "loading");
     const response = await fetch(url);
     if (!response.ok) {
       mostrarEstat("No s'ha pogut carregar el detall del Pokémon.", "error");
@@ -85,6 +86,7 @@ async function carregarDetallPokemon(id: number, url: string): Promise<void> {
     const detailedPokemon = new DetailedPokemon(data, url);
     cachePokemon.set(id, detailedPokemon);
     renderitzarDetallCard(detailedPokemon);
+    amagarEstat();
   } catch (error) {
     mostrarEstat("Error al carregar el detall del Pokémon.", "error");
   }

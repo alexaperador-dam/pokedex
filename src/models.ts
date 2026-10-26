@@ -160,7 +160,11 @@ export class DetailedPokemon extends BasePokemon {
         this._imageUrl = data.sprites.front_default || "";
         this._cryUrl = data.cries?.latest || null;
         this._types = data.types
-            .map((t) => POKEMON_TYPES[t.type.name, data.types])
+            .map((t) =>
+                t.type.name in POKEMON_TYPES
+                    ? POKEMON_TYPES[t.type.name as PokemonTypeName]
+                    : undefined,
+            )
             .filter((type): type is PokemonType => type !== undefined);
         this._stats = data.stats.map((s): Stat => [s.stat.name, s.base_stat]);
     }
@@ -224,6 +228,4 @@ export class DetailedPokemon extends BasePokemon {
  *   get types: retorna un array d'objectes PokemonType
  *   get stats: retorna un array de type Stat
  */
-
-
 

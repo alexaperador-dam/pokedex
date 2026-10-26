@@ -9,59 +9,61 @@ import * as Models from "./models.js";
  * Usa-la com a MODEL per escriure les teves pròpies funcions.
  */
 export function mostrarEstat(missatge: string, tipus: Models.EstatTipus): void {
-    const statusContainer = document.getElementById("status-message");
-    if (!statusContainer) return;
+  const statusContainer = document.getElementById("status-message");
+  if (!statusContainer) return;
 
-    statusContainer.textContent = missatge;
-    statusContainer.className = tipus; // el CSS defineix #status-message.loading / .error
+  statusContainer.textContent = missatge;
+  statusContainer.className = tipus; // el CSS defineix #status-message.loading / .error
 }
 
 /**
  * Amaga el missatge d'estat.
  */
 export function amagarEstat(): void {
-    const statusContainer = document.getElementById("status-message");
-    if (!statusContainer) return;
+  const statusContainer = document.getElementById("status-message");
+  if (!statusContainer) return;
 
-    statusContainer.textContent = "";
-    statusContainer.className = "hidden";
+  statusContainer.textContent = "";
+  statusContainer.className = "hidden";
 }
 
 /**
  * Neteja l'input cercador i torna a mostrar tots els ítems de la llista.
  */
 export function netejarCercador(): void {
-    const searchInput = document.getElementById("search-input") as HTMLInputElement | null;
-    if (searchInput) {
-        searchInput.value = "";
-    }
+  const searchInput = document.getElementById(
+    "search-input",
+  ) as HTMLInputElement | null;
+  if (searchInput) {
+    searchInput.value = "";
+  }
 
-    const items = document.querySelectorAll<HTMLLIElement>("#pokemon-list li");
-    items.forEach((li) => li.classList.remove("hidden"));
+  const items = document.querySelectorAll<HTMLLIElement>("#pokemon-list li");
+  items.forEach((li) => li.classList.remove("hidden"));
 }
 
 /**
  * Marca visualment l'element seleccionat a la llista.
  */
 export function marcarItemActiu(target: HTMLElement): void {
-    const listItem = target.closest("li");
-    if (!listItem) return;
+  const listItem = target.closest("li");
+  if (!listItem) return;
 
-    document.querySelectorAll("#pokemon-list li").forEach((li) => {
-        li.classList.remove("active");
-    });
+  document.querySelectorAll("#pokemon-list li").forEach((li) => {
+    li.classList.remove("active");
+  });
 
-    listItem.classList.add("active");
+  listItem.classList.add("active");
 }
 
 /**
  * Torna el panell de detall al seu estat inicial (placeholder).
  */
 export function netejarDetallCard(): void {
-    const container = document.getElementById("pokemon-detail");
-    if (!container) return;
+  const container = document.getElementById("pokemon-detail");
+  if (!container) return;
 
-    container.innerHTML = `
+  container.innerHTML = `
         <p class="placeholder">Selecciona un Pokémon de la llista per veure les seves dades.</p>
     `;
 }
@@ -70,45 +72,45 @@ export function netejarDetallCard(): void {
  * Reprodueix el crit del Pokémon.
  */
 export function reproduirCrit(soundUrl: string): void {
-    const audio = new Audio(soundUrl);
-    audio.play().catch(() => {
-        mostrarEstat("No s'ha pogut reproduir el crit.", "error");
-    });
+  const audio = new Audio(soundUrl);
+  audio.play().catch(() => {
+    mostrarEstat("No s'ha pogut reproduir el crit.", "error");
+  });
 }
-
 
 // ==========================================================
 // PART B: FUNCIONS QUE HAS D'IMPLEMENTAR TU
 // ==========================================================
 
-
 /**
  * EXERCICI 1
  * Renderitza la llista de Pokémon dins de <ul id="pokemon-list">.
-*
-* Requisits:
-*  - Obtenir una instància del contenidor on es mostra la llista de pokémons.
-*  - Buidar el contenidor abans de pintar.
-*  - Per a cada pokémon, crear un <li> amb createElement.
-*  - Desar id a dataset: li.dataset.id
-*  - El text del <li> ha de ser: <strong>#025</strong> - pikachu
-*    (usa els getters formattedId i name).
-*  - Afegir el <li> al contenidor amb appendChild.
-*/
+ *
+ * Requisits:
+ *  - Obtenir una instància del contenidor on es mostra la llista de pokémons.
+ *  - Buidar el contenidor abans de pintar.
+ *  - Per a cada pokémon, crear un <li> amb createElement.
+ *  - Desar id a dataset: li.dataset.id
+ *  - El text del <li> ha de ser: <strong>#025</strong> - pikachu
+ *    (usa els getters formattedId i name).
+ *  - Afegir el <li> al contenidor amb appendChild.
+ */
 // TODO: Implementa la lògica de l'exercici 1 seguint els requisits
 
-export function renderitzarLlistaPokemons(pokemons: Models.BasePokemon[]): void {
-    const listContainer = document.getElementById("pokemon-list");
-    if (!listContainer) return;
+export function renderitzarLlistaPokemons(
+  pokemons: Models.BasePokemon[],
+): void {
+  const listContainer = document.getElementById("pokemon-list");
+  if (!listContainer) return;
 
-    listContainer.innerHTML = "";
+  listContainer.innerHTML = "";
 
-    pokemons.forEach((pokemon) => {
-        const li = document.createElement("li");
-        li.dataset.id = pokemon.id.toString();
-        li.innerHTML = `<strong>${pokemon.formattedId}</strong> - ${pokemon.name}`;
-        listContainer.appendChild(li);
-    });
+  pokemons.forEach((pokemon) => {
+    const li = document.createElement("li");
+    li.dataset.id = pokemon.id.toString();
+    li.innerHTML = `<strong>${pokemon.formattedId}</strong> - ${pokemon.name}`;
+    listContainer.appendChild(li);
+  });
 }
 
 /**
@@ -137,28 +139,32 @@ export function renderitzarLlistaPokemons(pokemons: Models.BasePokemon[]): void 
 // TODO: Implementa la lògica de l'exercici 3 seguint els requisits
 
 export function renderitzarDetallCard(pokemon: Models.DetailedPokemon) {
-    const detailContainer = document.getElementById("pokemon-detail");
-    if (!detailContainer) return;
+  const detailContainer = document.getElementById("pokemon-detail");
+  if (!detailContainer) return;
 
-    let cryButtonHTML = "";
-    if (pokemon.cryUrl) {
-        cryButtonHTML = `<button id="btn-play-cry" class="btn-cry">🔊 Escolta el crit</button>`;
-    }
+  let cryButtonHTML = "";
+  if (pokemon.cryUrl) {
+    cryButtonHTML = `<button id="btn-play-cry" class="btn-cry">🔊 Escolta el crit</button>`;
+  }
 
-    detailContainer.innerHTML = `
-        <div class="detail-card">
-            <h3>${pokemon.formattedId} ${pokemon.name}</h3>
-            <img src="${pokemon.imageUrl}" alt="${pokemon.name}">
-            ${cryButtonHTML}
-            <p><strong>Pes:</strong> ${pokemon.weightKg} kg</p>
-            <p><strong>Tipus:</strong> ${pokemon.types.map((type) => type.icon + " " + type.label).join(", ")}</p>
-            <div class="stats-grid">
-                ${pokemon.stats.map((stat) => `<div class="stat-box"><span>${stat[0].toUpperCase()}</span><strong>${stat[1]}</strong></div>`).join("")}
-            </div>
-        </div>
+  detailContainer.innerHTML = `
+    <div class="detail-card">
+    <h3>${pokemon.formattedId} ${pokemon.name}</h3>
+    <img src="${pokemon.imageUrl}" alt="${pokemon.name}">
+    ${cryButtonHTML}
+    <p><strong>Pes:</strong> ${pokemon.weightKg} kg</p>
+    <p><strong>Tipus:</strong> ${pokemon.types.map((type) => type.label).join(", ")}</p>
+    <div class="stats-grid">
+        ${pokemon.stats.map((stat) => `<div class="stat-box"><span>${stat[0].toUpperCase()}</span><strong>${stat[1]}</strong></div>`).join("")}
+    </div>
+    </div>
     `;
+  document.getElementById("btn-play-cry")?.addEventListener("click", () => {
+    if (pokemon.cryUrl) {
+      reproduirCrit(pokemon.cryUrl);
+    }
+  });
 }
-
 
 /**
  * EXERCICI 4
@@ -176,5 +182,3 @@ export function renderitzarDetallCard(pokemon: Models.DetailedPokemon) {
  */
 
 // TODO: Implementa la lògica de l'exercici 4 seguint els requisits
-
-
