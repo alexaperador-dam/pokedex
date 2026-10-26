@@ -85,4 +85,25 @@ generarBotonsTipus();
 // EXERCICI 5: Filtrar la llista per tipus
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 5 seguint els requisits
+document.getElementById("#type-filter-container")?.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target.tagName === "BUTTON") {
+        marcarItemActiu(target);
+        const tipus = target.dataset.type;
+        carregarPokemonPerTipus(tipus);
+    }
+});
+async function carregarPokemonPerTipus(tipus) {
+    try {
+        const response = await fetch(`https://pokeapi.co/api/v2/type/${tipus}`);
+        if (!response.ok) {
+            mostrarEstat("No s'ha pogut carregar el detall del Pokémon.", "error");
+            return;
+        }
+        const data = await response.json();
+    }
+    catch (error) {
+        mostrarEstat("Error al carregar els tipus de pokemons", "error");
+    }
+}
 //# sourceMappingURL=main.js.map
