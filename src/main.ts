@@ -114,16 +114,5 @@ document.getElementById("#type-filter-container")?.addEventListener("click", (ev
 });
 
 async function carregarPokemonPerTipus(tipus: string): Promise<void> {
-    try {
-      const response = await fetch(`https://pokeapi.co/api/v2/type/${tipus}`);
-    if (!response.ok) {
-      mostrarEstat("No s'ha pogut carregar el detall del Pokémon.", "error");
-      return;
-    }
-
-    const data: IPokeApiTypeResponse = await response.json();
-
-    } catch (error) {
-    mostrarEstat("Error al carregar els tipus de pokemons", "error");
-  }
+    
 }
