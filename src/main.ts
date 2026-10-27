@@ -3,8 +3,23 @@
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 1 seguint els requisits
 
-import { BasePokemon, DetailedPokemon, IPokeApiDetail, IPokeApiListResponse } from "./models.js";
-import { mostrarEstat, netejarCercador, renderitzarLlistaPokemons, generarBotonsTipus, renderitzarDetallCard, marcarItemActiu, amagarEstat } from "./utils.js";
+import {
+  BasePokemon,
+  DetailedPokemon,
+  IPokeApiDetail,
+  IPokeApiListResponse,
+  IPokeApiTypeResponse,
+} from "./models.js";
+import {
+  mostrarEstat,
+  netejarCercador,
+  renderitzarLlistaPokemons,
+  generarBotonsTipus,
+  renderitzarDetallCard,
+  marcarItemActiu,
+  amagarEstat,
+  netejarDetallCard,
+} from "./utils.js";
 
 const mapaPokemon = new Map<number, BasePokemon>();
 const cachePokemon = new Map<number, DetailedPokemon>();
@@ -22,7 +37,6 @@ async function carregarLlistaPokemon() {
       const pokemonData: BasePokemon = new BasePokemon(pokemon);
       mapaPokemon.set(pokemonData.id, pokemonData);
     }
-
   } catch (error) {
     mostrarEstat("Error al carregar la llista de Pokémon.", "error");
   }
@@ -38,13 +52,18 @@ document.getElementById("btn-show-all")?.addEventListener("click", () => {
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 2 seguint els requisits
 
+
+
 document.getElementById("search-input")?.addEventListener("input", () => {
-  const searchInput = document.getElementById("search-input") as HTMLInputElement;
+  const searchInput = document.getElementById(
+    "search-input",
+  ) as HTMLInputElement;
   const value = searchInput.value.toLowerCase();
-  const filtrarPokemons = Array.from(mapaPokemon.values()).filter((pokemon) =>
-    pokemon.name.toLowerCase().trim().includes(value) ||
-    pokemon.formattedId.includes(value) ||
-    pokemon.id.toString().includes(value)
+  const filtrarPokemons = Array.from(mapaPokemon.values()).filter(
+    (pokemon) =>
+      pokemon.name.toLowerCase().trim().includes(value) ||
+      pokemon.formattedId.includes(value) ||
+      pokemon.id.toString().includes(value),
   );
   renderitzarLlistaPokemons(filtrarPokemons);
 });
@@ -54,16 +73,18 @@ document.getElementById("search-input")?.addEventListener("input", () => {
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 3 seguint els requisits
 
-document.getElementById("pokemon-list")?.addEventListener("click", async (event) => {
-  const target = event.target as HTMLElement;
+document
+  .getElementById("pokemon-list")
+  ?.addEventListener("click", async (event) => {
+    const target = event.target as HTMLElement;
 
-  if (target.tagName === "LI") {
-    const id = parseInt(target.dataset.id || "0");
-    const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
-    marcarItemActiu(target);
-    await carregarDetallPokemon(id, url);
-  }
-})
+    if (target.tagName === "LI") {
+      const id = parseInt(target.dataset.id || "0");
+      const url = `https://pokeapi.co/api/v2/pokemon/${id}/`;
+      marcarItemActiu(target);
+      await carregarDetallPokemon(id, url);
+    }
+  });
 
 async function carregarDetallPokemon(id: number, url: string): Promise<void> {
   if (cachePokemon.has(id)) {
@@ -97,11 +118,57 @@ async function carregarDetallPokemon(id: number, url: string): Promise<void> {
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 4 seguint els requisits
 
-
-generarBotonsTipus()
+generarBotonsTipus();
 
 // ==========================================================
 // EXERCICI 5: Filtrar la llista per tipus
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 5 seguint els requisits
 
+async function carregarPokemonPerTipus(tipus: string) {
+  try {
+    mostrarEstat(`Carregant Pokémon de tipus ${tipus}...`, "loading");
+    const response = await fetch(`https://pokeapi.co/api/v2/type/${tipus}`);
+
+    const data: IPokeApiTypeResponse = await response.json();
+
+    if (!response.ok) {
+      mostrarEstat(
+        `No s'ha pogut carregar Pokémon de tipus ${tipus}.`,
+        "error",
+      );
+      return;
+    }
+
+    // mapaPokemon.clear();
+    const pokemons: BasePokemon[] = [];
+    for (const pokemon of data.pokemon) {
+      if (Number(pokemon.pokemon.url.split("/").filter(Boolean).pop()) <= 151) {
+        const pokemonData: BasePokemon = new BasePokemon(pokemon.pokemon);
+        pokemons.push(pokemonData);
+      }
+    }
+
+    renderitzarLlistaPokemons(pokemons);
+    netejarCercador();
+    netejarDetallCard();
+    amagarEstat();
+  } catch (error) {
+    mostrarEstat(`Error al carregar Pokémon de tipus ${tipus}.`, "error");
+  }
+}
+let activo: boolean = false;
+document
+  .getElementById("type-filter-container")
+  ?.addEventListener("click", async (event) => {
+    if (!activo) {
+      console.log("open");
+      const target = event.target as HTMLElement;
+      const tipo: string = target.dataset["type"] as string;
+      carregarPokemonPerTipus(tipo);
+      activo = true;
+    } else {
+      carregarLlistaPokemon();
+      activo = false;
+    }
+  });

@@ -2,8 +2,8 @@
 // EXERCICI 1: Llistar els 151 Pokémon
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 1 seguint els requisits
-import { BasePokemon, DetailedPokemon } from "./models.js";
-import { mostrarEstat, netejarCercador, renderitzarLlistaPokemons, generarBotonsTipus, renderitzarDetallCard, marcarItemActiu, amagarEstat } from "./utils.js";
+import { BasePokemon, DetailedPokemon, } from "./models.js";
+import { mostrarEstat, netejarCercador, renderitzarLlistaPokemons, generarBotonsTipus, renderitzarDetallCard, marcarItemActiu, amagarEstat, netejarDetallCard, } from "./utils.js";
 const mapaPokemon = new Map();
 const cachePokemon = new Map();
 async function carregarLlistaPokemon() {
@@ -43,7 +43,9 @@ document.getElementById("search-input")?.addEventListener("input", () => {
 // EXERCICI 3: Detall del Pokémon, cache i crit
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 3 seguint els requisits
-document.getElementById("pokemon-list")?.addEventListener("click", async (event) => {
+document
+    .getElementById("pokemon-list")
+    ?.addEventListener("click", async (event) => {
     const target = event.target;
     if (target.tagName === "LI") {
         const id = parseInt(target.dataset.id || "0");
@@ -85,4 +87,46 @@ generarBotonsTipus();
 // EXERCICI 5: Filtrar la llista per tipus
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 5 seguint els requisits
+async function carregarPokemonPerTipus(tipus) {
+    try {
+        mostrarEstat(`Carregant Pokémon de tipus ${tipus}...`, "loading");
+        const response = await fetch(`https://pokeapi.co/api/v2/type/${tipus}`);
+        const data = await response.json();
+        if (!response.ok) {
+            mostrarEstat(`No s'ha pogut carregar Pokémon de tipus ${tipus}.`, "error");
+            return;
+        }
+        // mapaPokemon.clear();
+        const pokemons = [];
+        for (const pokemon of data.pokemon) {
+            if (Number(pokemon.pokemon.url.split("/").filter(Boolean).pop()) <= 151) {
+                const pokemonData = new BasePokemon(pokemon.pokemon);
+                pokemons.push(pokemonData);
+            }
+        }
+        renderitzarLlistaPokemons(pokemons);
+        netejarCercador();
+        netejarDetallCard();
+        amagarEstat();
+    }
+    catch (error) {
+        mostrarEstat(`Error al carregar Pokémon de tipus ${tipus}.`, "error");
+    }
+}
+let activo = false;
+document
+    .getElementById("type-filter-container")
+    ?.addEventListener("click", async (event) => {
+    if (!activo) {
+        console.log("open");
+        const target = event.target;
+        const tipo = target.dataset["type"];
+        carregarPokemonPerTipus(tipo);
+        activo = true;
+    }
+    else {
+        carregarLlistaPokemon();
+        activo = false;
+    }
+});
 //# sourceMappingURL=main.js.map
