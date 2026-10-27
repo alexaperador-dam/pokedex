@@ -3,8 +3,13 @@
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 1 seguint els requisits
 
+<<<<<<< HEAD
 import { BasePokemon, DetailedPokemon, IPokeApiDetail, IPokeApiListResponse } from "./models.js";
 import { amagarEstat, marcarItemActiu, mostrarEstat, netejarCercador, renderitzarDetallCard, renderitzarLlistaPokemons } from "./utils.js";
+=======
+import { BasePokemon, IPokeApiListResponse } from "./models.js";
+import { mostrarEstat, netejarCercador, renderitzarLlistaPokemons, generarBotonsTipus } from "./utils.js";
+>>>>>>> ferran
 
 const mapaPokemon = new Map<number, BasePokemon>();
 const cachePokemon = new Map<number, DetailedPokemon>();
@@ -98,6 +103,11 @@ async function carregarDetallPokemon(id: number, url: string): Promise<void> {
 // TODO: Implementa la lògica de l'exercici 4 seguint els requisits
 
 
+<<<<<<< HEAD
+=======
+generarBotonsTipus()
+
+>>>>>>> ferran
 // ==========================================================
 // EXERCICI 5: Filtrar la llista per tipus
 // ==========================================================
