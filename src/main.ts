@@ -3,8 +3,8 @@
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 1 seguint els requisits
 
-import { BasePokemon, DetailedPokemon, IPokeApiDetail, IPokeApiListResponse, IPokeApiTypeResponse } from "./models.js";
-import { amagarEstat, generarBotonsTipus, marcarItemActiu, mostrarEstat, netejarCercador, renderitzarDetallCard, renderitzarLlistaPokemons } from "./utils.js";
+import { BasePokemon, DetailedPokemon, IPokeApiDetail, IPokeApiListResponse } from "./models.js";
+import { amagarEstat, marcarItemActiu, mostrarEstat, netejarCercador, renderitzarDetallCard, renderitzarLlistaPokemons } from "./utils.js";
 
 const mapaPokemon = new Map<number, BasePokemon>();
 const cachePokemon = new Map<number, DetailedPokemon>();
@@ -97,22 +97,9 @@ async function carregarDetallPokemon(id: number, url: string): Promise<void> {
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 4 seguint els requisits
 
-generarBotonsTipus();
 
 // ==========================================================
 // EXERCICI 5: Filtrar la llista per tipus
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 5 seguint els requisits
 
-document.getElementById("#type-filter-container")?.addEventListener("click", (event) => {
-  const target = event.target as HTMLElement;
-  if (target.tagName === "BUTTON") {
-    marcarItemActiu(target);
-    const tipus = target.dataset.type as string;
-    carregarPokemonPerTipus(tipus);
-  }
-});
-
-async function carregarPokemonPerTipus(tipus: string): Promise<void> {
-    
-}

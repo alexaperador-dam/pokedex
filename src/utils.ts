@@ -182,17 +182,3 @@ export function renderitzarDetallCard(pokemon: Models.DetailedPokemon) {
  */
 
 // TODO: Implementa la lògica de l'exercici 4 seguint els requisits
-
-export function generarBotonsTipus(): void {
-  const container = document.getElementById(
-    "type-filter-container",
-  ) as HTMLDivElement;
-  for (const pokemonType of Object.values(Models.POKEMON_TYPES)) {
-    const btn: HTMLButtonElement = document.createElement("button");
-    btn.className = "btn-type";
-    btn.dataset.type = pokemonType.id;
-    btn.style.backgroundColor = pokemonType.color;
-    btn.textContent = pokemonType.label;
-    container.appendChild(btn);
-  }
-}
