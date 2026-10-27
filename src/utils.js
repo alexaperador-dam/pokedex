@@ -1,3 +1,4 @@
+import { POKEMON_TYPES } from "./models.js";
 // ==========================================================
 // PART A: FUNCIONS JA IMPLEMENTADES (no cal modificar-les)
 // ==========================================================
@@ -158,4 +159,15 @@ export function renderitzarDetallCard(pokemon) {
  *  - Recorda afegir el botó correctament al contenidor
  */
 // TODO: Implementa la lògica de l'exercici 4 seguint els requisits
+export function generarBotonsTipus() {
+    let vals = Object.values(POKEMON_TYPES);
+    for (const tipus of vals) {
+        let btn = document.createElement("Button");
+        btn.className = "btn-type";
+        btn.dataset.type = tipus.id;
+        btn.style.backgroundColor = tipus.color;
+        btn.textContent = tipus.label;
+        document.getElementById("type-filter-container")?.appendChild(btn);
+    }
+}
 //# sourceMappingURL=utils.js.map

@@ -184,8 +184,6 @@ export function renderitzarDetallCard(pokemon: Models.DetailedPokemon) {
 
 
 // TODO: Implementa la lògica de l'exercici 4 seguint els requisits
-<<<<<<< HEAD
-=======
 
 export function generarBotonsTipus(): void{
 
@@ -203,4 +201,3 @@ export function generarBotonsTipus(): void{
 }
 
 
->>>>>>> ferran
