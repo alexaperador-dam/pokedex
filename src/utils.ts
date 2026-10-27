@@ -1,4 +1,5 @@
 import * as Models from "./models.js";
+import {POKEMON_TYPES} from "./models.js";
 
 // ==========================================================
 // PART A: FUNCIONS JA IMPLEMENTADES (no cal modificar-les)
@@ -152,6 +153,22 @@ export function renderitzarLlistaPokemons(pokemons: Models.BasePokemon[]): void 
  *  - Recorda afegir el botó correctament al contenidor
  */
 
+
 // TODO: Implementa la lògica de l'exercici 4 seguint els requisits
+
+export function generarBotonsTipus(): void{
+
+    let vals = Object.values(POKEMON_TYPES)
+    for (const tipus of vals) {
+        let btn = document.createElement("Button") as HTMLButtonElement
+        btn.className = "btn-type";
+        btn.dataset.type = tipus.id
+        btn.style.backgroundColor = tipus.color
+        btn.textContent = tipus.label
+
+        document.getElementById("type-filter-container")?.appendChild(btn)
+
+    }
+}
 
 

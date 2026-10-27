@@ -4,7 +4,7 @@
 // TODO: Implementa la lògica de l'exercici 1 seguint els requisits
 
 import { BasePokemon, IPokeApiListResponse } from "./models.js";
-import { mostrarEstat, netejarCercador, renderitzarLlistaPokemons } from "./utils.js";
+import { mostrarEstat, netejarCercador, renderitzarLlistaPokemons, generarBotonsTipus } from "./utils.js";
 
 const mapaPokemon = new Map<number, BasePokemon>();
 
@@ -57,6 +57,9 @@ document.getElementById("search-input")?.addEventListener("input", () => {
 // EXERCICI 4: Botons de filtre per tipus
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 4 seguint els requisits
+
+
+generarBotonsTipus()
 
 // ==========================================================
 // EXERCICI 5: Filtrar la llista per tipus
