@@ -6,6 +6,7 @@ import { BasePokemon, DetailedPokemon, } from "./models.js";
 import { mostrarEstat, netejarCercador, renderitzarLlistaPokemons, generarBotonsTipus, renderitzarDetallCard, marcarItemActiu, amagarEstat, netejarDetallCard, } from "./utils.js";
 const mapaPokemon = new Map();
 const cachePokemon = new Map();
+let pokemonsVisibles = [];
 async function carregarLlistaPokemon() {
     netejarCercador();
     try {
@@ -22,7 +23,8 @@ async function carregarLlistaPokemon() {
     catch (error) {
         mostrarEstat("Error al carregar la llista de Pokémon.", "error");
     }
-    renderitzarLlistaPokemons(Array.from(mapaPokemon.values()));
+    pokemonsVisibles = Array.from(mapaPokemon.values());
+    renderitzarLlistaPokemons(pokemonsVisibles);
 }
 document.getElementById("btn-show-all")?.addEventListener("click", () => {
     carregarLlistaPokemon();
@@ -34,7 +36,7 @@ document.getElementById("btn-show-all")?.addEventListener("click", () => {
 document.getElementById("search-input")?.addEventListener("input", () => {
     const searchInput = document.getElementById("search-input");
     const value = searchInput.value.toLowerCase();
-    const filtrarPokemons = Array.from(mapaPokemon.values()).filter((pokemon) => pokemon.name.toLowerCase().trim().includes(value) ||
+    const filtrarPokemons = pokemonsVisibles.filter((pokemon) => pokemon.name.toLowerCase().trim().includes(value) ||
         pokemon.formattedId.includes(value) ||
         pokemon.id.toString().includes(value));
     renderitzarLlistaPokemons(filtrarPokemons);
@@ -104,6 +106,7 @@ async function carregarPokemonPerTipus(tipus) {
                 pokemons.push(pokemonData);
             }
         }
+        pokemonsVisibles = pokemons;
         renderitzarLlistaPokemons(pokemons);
         netejarCercador();
         netejarDetallCard();
@@ -118,7 +121,6 @@ document
     .getElementById("type-filter-container")
     ?.addEventListener("click", async (event) => {
     if (!activo) {
-        console.log("open");
         const target = event.target;
         const tipo = target.dataset["type"];
         carregarPokemonPerTipus(tipo);

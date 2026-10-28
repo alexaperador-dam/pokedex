@@ -24,6 +24,8 @@ import {
 const mapaPokemon = new Map<number, BasePokemon>();
 const cachePokemon = new Map<number, DetailedPokemon>();
 
+let pokemonsVisibles: BasePokemon[] = [];
+
 async function carregarLlistaPokemon() {
   netejarCercador();
   try {
@@ -40,7 +42,8 @@ async function carregarLlistaPokemon() {
   } catch (error) {
     mostrarEstat("Error al carregar la llista de Pokémon.", "error");
   }
-  renderitzarLlistaPokemons(Array.from(mapaPokemon.values()));
+  pokemonsVisibles = Array.from(mapaPokemon.values());
+  renderitzarLlistaPokemons(pokemonsVisibles);
 }
 
 document.getElementById("btn-show-all")?.addEventListener("click", () => {
@@ -59,7 +62,7 @@ document.getElementById("search-input")?.addEventListener("input", () => {
     "search-input",
   ) as HTMLInputElement;
   const value = searchInput.value.toLowerCase();
-  const filtrarPokemons = Array.from(mapaPokemon.values()).filter(
+  const filtrarPokemons = pokemonsVisibles.filter(
     (pokemon) =>
       pokemon.name.toLowerCase().trim().includes(value) ||
       pokemon.formattedId.includes(value) ||
@@ -149,6 +152,7 @@ async function carregarPokemonPerTipus(tipus: string) {
       }
     }
 
+    pokemonsVisibles = pokemons;
     renderitzarLlistaPokemons(pokemons);
     netejarCercador();
     netejarDetallCard();
@@ -162,7 +166,6 @@ document
   .getElementById("type-filter-container")
   ?.addEventListener("click", async (event) => {
     if (!activo) {
-      console.log("open");
       const target = event.target as HTMLElement;
       const tipo: string = target.dataset["type"] as string;
       carregarPokemonPerTipus(tipo);
